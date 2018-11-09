@@ -1,5 +1,6 @@
 #' Data munging to convert network data into a form amenable 
-#' to the construction of multilayer networks using multinet.
+#' to the construction of multilayer networks using multinet
+#' and muxViz.
 
 library(tidyverse)
 library(multinet)
@@ -67,7 +68,6 @@ eco_all %>%
 test <- read.ml("ceramicMultilayer_complete_in progress.csv")  
 test
 plot(test)
-
 
 # Pre-Treatment for muxViz ####
 # muxViz is a powerful tool for multilayer network anlaysis and visualization
@@ -205,7 +205,7 @@ plates %>%
 
 # Plates directed pre
 plates %>%
-  filter(Time == 2) %>%
+  filter(Time == 1) %>%
   select(Source, Target, weight) %>%
   unite(sep = " ") %>%
   write.table("edge_list_ptech_directed_pre.txt", row.names = FALSE, 
@@ -256,7 +256,3 @@ as.data.frame(as_edgelist(pg_un_post)) %>%
   unite(sep = " ") %>%
   write.table("edge_list_ptech_undirected_post.txt", row.names = FALSE,
               col.names = FALSE, quote = FALSE) 
-  
-  
-  
-
