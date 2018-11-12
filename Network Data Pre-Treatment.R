@@ -261,41 +261,34 @@ as.data.frame(as_edgelist(pg_un_post)) %>%
 # Here I take directed jar and plate technological attribute networks and 
 # decompose them into undirected networks based on the average edge weights
 # among any two given sites (if there is no reciprocal edge, the present
-# edge weight is used to define the relationship)
+# edge weight is used to define the relationship). 
+# Filtering can be applied in Gephi, so only one edge table is needed for
+# each vessel class. 
 
-# Jars pre-migration for Gephi
-as.data.frame(as_edgelist(jg_un_pre)) %>%
-  mutate(weight = E(jg_un_pre)$weight) %>%
-  rename(Source = V1, Target = V2) %>%
-  write_csv("Jars_tech_UN_pre-migration.csv")
+# Import jar/plate data again (no special modifications to site names is 
+# needed for Gephi)
+p <- read_csv('plate_complete_edgelist.csv')
+j <- read_csv('jar_complete_edgelist.csv')
 
-# Jars post-migration for Gephi
-as.data.frame(as_edgelist(jg_un_post)) %>%
-  mutate(weight = E(jg_un_post)$weight) %>%
-  rename(Source = V1, Target = V2) %>%
-  write_csv("Jars_tech_UN_post-migration.csv")
-
-# Jars across time for Gephi
-as.data.frame(as_edgelist(jg_un)) %>%
-  mutate(weight = E(jg_un)$weight) %>%
+# Jars for Gephi
+j %>%
+  graph.data.frame(directed = TRUE) %>%
+  as.undirected(edge.attr.comb = "mean", mode = "collapse") %>%
+  as_edgelist(.) %>%
+  as.data.frame(.) %>%
+  mutate(weight = E(as.undirected(graph.data.frame(j,directed = TRUE), 
+                                  edge.attr.comb = "mean", mode = "collapse"))$weight) %>%
   rename(Source = V1, Target = V2) %>%
   write_csv("Jars_tech_UN_across_time.csv")
-
-# Plates pre-migration for Gephi
-as.data.frame(as_edgelist(pg_un_pre)) %>%
-  mutate(weight = E(pg_un_pre)$weight) %>%
-  rename(Source = V1, Target = V2) %>%
-  write_csv("Plates_tech_UN_pre-migration.csv")
-
-# Plate post-migration for Gephi
-as.data.frame(as_edgelist(pg_un_post)) %>%
-  mutate(weight = E(pg_un_post)$weight) %>%
-  rename(Source = V1, Target = V2) %>%
-  write_csv("Plates_tech_UN_post-migration.csv")
-
-# Plates across time for Gephi
-as.data.frame(as_edgelist(pg_un)) %>%
-  mutate(weight = E(pg_un)$weight) %>%
+  
+# Plates for Gephi
+p %>%
+  graph.data.frame(directed = TRUE) %>%
+  as.undirected(edge.attr.comb = "mean", mode = "collapse") %>%
+  as_edgelist(.) %>%
+  as.data.frame(.) %>%
+  mutate(weight = E(as.undirected(graph.data.frame(p,directed = TRUE), 
+                                  edge.attr.comb = "mean", mode = "collapse"))$weight) %>%
   rename(Source = V1, Target = V2) %>%
   write_csv("Plates_tech_UN_across_time.csv")
 
