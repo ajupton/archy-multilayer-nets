@@ -169,7 +169,7 @@ as.data.frame(as_edgelist(jg_un)) %>%
 
 # Jar undirected pre
 jars %>%
-  filter(Time == 1) %>%
+  filter(Time == 1) %>% 
   graph.data.frame(directed = TRUE) -> jg_pre
 jg_un_pre <- as.undirected(jg_pre, edge.attr.comb = "mean", mode = "collapse")
 
@@ -256,3 +256,46 @@ as.data.frame(as_edgelist(pg_un_post)) %>%
   unite(sep = " ") %>%
   write.table("edge_list_ptech_undirected_post.txt", row.names = FALSE,
               col.names = FALSE, quote = FALSE) 
+
+## UNDIRECTED Edgelists for Gephi
+# Here I take directed jar and plate technological attribute networks and 
+# decompose them into undirected networks based on the average edge weights
+# among any two given sites (if there is no reciprocal edge, the present
+# edge weight is used to define the relationship)
+
+# Jars pre-migration for Gephi
+as.data.frame(as_edgelist(jg_un_pre)) %>%
+  mutate(weight = E(jg_un_pre)$weight) %>%
+  rename(Source = V1, Target = V2) %>%
+  write_csv("Jars_tech_UN_pre-migration.csv")
+
+# Jars post-migration for Gephi
+as.data.frame(as_edgelist(jg_un_post)) %>%
+  mutate(weight = E(jg_un_post)$weight) %>%
+  rename(Source = V1, Target = V2) %>%
+  write_csv("Jars_tech_UN_post-migration.csv")
+
+# Jars across time for Gephi
+as.data.frame(as_edgelist(jg_un)) %>%
+  mutate(weight = E(jg_un)$weight) %>%
+  rename(Source = V1, Target = V2) %>%
+  write_csv("Jars_tech_UN_across_time.csv")
+
+# Plates pre-migration for Gephi
+as.data.frame(as_edgelist(pg_un_pre)) %>%
+  mutate(weight = E(pg_un_pre)$weight) %>%
+  rename(Source = V1, Target = V2) %>%
+  write_csv("Plates_tech_UN_pre-migration.csv")
+
+# Plate post-migration for Gephi
+as.data.frame(as_edgelist(pg_un_post)) %>%
+  mutate(weight = E(pg_un_post)$weight) %>%
+  rename(Source = V1, Target = V2) %>%
+  write_csv("Plates_tech_UN_post-migration.csv")
+
+# Plates across time for Gephi
+as.data.frame(as_edgelist(pg_un)) %>%
+  mutate(weight = E(pg_un)$weight) %>%
+  rename(Source = V1, Target = V2) %>%
+  write_csv("Plates_tech_UN_across_time.csv")
+
