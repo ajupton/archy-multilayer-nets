@@ -292,3 +292,53 @@ p %>%
   rename(Source = V1, Target = V2) %>%
   write_csv("Plates_tech_UN_across_time.csv")
 
+# Function to calculate degree, betweenness, closeness, and eigenvector centrality 
+# for a graphand return a data frame with the scores
+centr_all <- function(graph, g_name = "Score") {
+  
+  # Check that graph is an igraph object
+  if (!is_igraph(graph)) {
+    stop("Not a graph object")
+  }
+  
+  # Name of graph
+  g_name <- as.character(g_name)
+  
+  # Degree centralization
+  res_centr <- centr_degree(graph)$centralization
+  
+  # Betweenness centralization
+  res_centr[2] <- centr_betw(graph)$centralization
+  
+  # Closeness centralization
+  res_centr[3] <- centr_clo(graph)$centralization
+  
+  # Eigenvector centralization
+  res_centr[4] <- centr_eigen(graph)$centralization
+  
+  res_centr <- t(as.data.frame(res_centr))
+  
+  # Table of scores
+  colnames(res_centr) <- c("Degree", "Betweenness", "Closeness", "Eigenvector")
+  rownames(res_centr) <- g_name
+  
+  res_centr
+}
+
+## Centralization values for undirected jar and plate networks
+
+# Jar pre-migration, post-migration, and all
+j %>%
+  #filter(Time == 1) %>%
+  #filter(Time == 2) %>%
+  graph.data.frame(directed = TRUE) %>%
+  as.undirected(edge.attr.comb = "mean", mode = "collapse") %>%
+  centr_all(.)
+  
+# Plate pre-migration, post-migration, and all
+p %>%
+  #filter(Time == 1) %>%
+  #filter(Time == 2) %>%
+  graph.data.frame(directed = TRUE) %>%
+  as.undirected(edge.attr.comb = "mean", mode = "collapse") %>%
+  centr_all(.)
