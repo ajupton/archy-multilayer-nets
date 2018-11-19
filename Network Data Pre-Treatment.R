@@ -342,3 +342,59 @@ p %>%
   graph.data.frame(directed = TRUE) %>%
   as.undirected(edge.attr.comb = "mean", mode = "collapse") %>%
   centr_all(.)
+
+# Undirected networks for multinet ####
+
+# Jars undirected multinet
+# Pre-migration
+j %>%
+  filter(Time == 1) %>%
+  graph.data.frame(directed = TRUE) %>%
+  as.undirected(edge.attr.comb = "mean", mode = "collapse") %>%
+  as_edgelist(.) %>%
+  as.data.frame(.) %>%
+  mutate(weight = E(as.undirected(graph.data.frame(filter(j, Time == 1),directed = TRUE), 
+                                  edge.attr.comb = "mean", mode = "collapse"))$weight) %>%
+  mutate(Layer = "Jar_pre") %>%
+  select(V1, V2, Layer, weight) %>%
+  unite(sep = ",") 
+
+# Post-migration
+j %>%
+  filter(Time == 2) %>%
+  graph.data.frame(directed = TRUE) %>%
+  as.undirected(edge.attr.comb = "mean", mode = "collapse") %>%
+  as_edgelist(.) %>%
+  as.data.frame(.) %>%
+  mutate(weight = E(as.undirected(graph.data.frame(filter(j, Time == 2),directed = TRUE), 
+                                  edge.attr.comb = "mean", mode = "collapse"))$weight) %>%
+  mutate(Layer = "Jar_pre") %>%
+  select(V1, V2, Layer, weight) %>%
+  unite(sep = ",") 
+
+# Plates undirected multinet
+# Pre-migration
+p %>%
+  filter(Time == 1) %>%
+  graph.data.frame(directed = TRUE) %>%
+  as.undirected(edge.attr.comb = "mean", mode = "collapse") %>%
+  as_edgelist(.) %>%
+  as.data.frame(.) %>%
+  mutate(weight = E(as.undirected(graph.data.frame(filter(p, Time == 1),directed = TRUE), 
+                                  edge.attr.comb = "mean", mode = "collapse"))$weight) %>%
+  mutate(Layer = "Jar_pre") %>%
+  select(V1, V2, Layer, weight) %>%
+  unite(sep = ",") 
+
+# Post-migration
+p %>%
+  filter(Time == 2) %>%
+  graph.data.frame(directed = TRUE) %>%
+  as.undirected(edge.attr.comb = "mean", mode = "collapse") %>%
+  as_edgelist(.) %>%
+  as.data.frame(.) %>%
+  mutate(weight = E(as.undirected(graph.data.frame(filter(p, Time == 2),directed = TRUE), 
+                                  edge.attr.comb = "mean", mode = "collapse"))$weight) %>%
+  mutate(Layer = "Jar_pre") %>%
+  select(V1, V2, Layer, weight) %>%
+  unite(sep = ",") 
