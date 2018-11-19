@@ -357,7 +357,8 @@ j %>%
                                   edge.attr.comb = "mean", mode = "collapse"))$weight) %>%
   mutate(Layer = "Jar_pre") %>%
   select(V1, V2, Layer, weight) %>%
-  unite(sep = ",") 
+  unite(sep = ",") %>%
+  write_delim("jar_pre_mulitnet_el.txt", delim = "")
 
 # Post-migration
 j %>%
@@ -370,7 +371,8 @@ j %>%
                                   edge.attr.comb = "mean", mode = "collapse"))$weight) %>%
   mutate(Layer = "Jar_post") %>%
   select(V1, V2, Layer, weight) %>%
-  unite(sep = ",") 
+  unite(sep = ",") %>%
+  write_delim("jar_post_mulitnet_el.txt", delim = "")
 
 # Plates undirected multinet
 # Pre-migration
@@ -398,4 +400,5 @@ p %>%
                                   edge.attr.comb = "mean", mode = "collapse"))$weight) %>%
   mutate(Layer = "Plate_post") %>%
   select(V1, V2, Layer, weight) %>%
-  unite(sep = ",") 
+  unite(sep = ",") %>%
+  write_delim("plate_post_mulitnet_el.txt", delim = "")
