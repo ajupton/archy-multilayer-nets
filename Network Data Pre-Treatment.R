@@ -368,7 +368,7 @@ j %>%
   as.data.frame(.) %>%
   mutate(weight = E(as.undirected(graph.data.frame(filter(j, Time == 2),directed = TRUE), 
                                   edge.attr.comb = "mean", mode = "collapse"))$weight) %>%
-  mutate(Layer = "Jar_pre") %>%
+  mutate(Layer = "Jar_post") %>%
   select(V1, V2, Layer, weight) %>%
   unite(sep = ",") 
 
@@ -382,9 +382,10 @@ p %>%
   as.data.frame(.) %>%
   mutate(weight = E(as.undirected(graph.data.frame(filter(p, Time == 1),directed = TRUE), 
                                   edge.attr.comb = "mean", mode = "collapse"))$weight) %>%
-  mutate(Layer = "Jar_pre") %>%
+  mutate(Layer = "Plate_pre") %>%
   select(V1, V2, Layer, weight) %>%
-  unite(sep = ",") 
+  unite(sep = ",") %>%
+  write_delim("plate_pre_mulitnet_el.txt", delim = "")
 
 # Post-migration
 p %>%
@@ -395,6 +396,6 @@ p %>%
   as.data.frame(.) %>%
   mutate(weight = E(as.undirected(graph.data.frame(filter(p, Time == 2),directed = TRUE), 
                                   edge.attr.comb = "mean", mode = "collapse"))$weight) %>%
-  mutate(Layer = "Jar_pre") %>%
+  mutate(Layer = "Plate_post") %>%
   select(V1, V2, Layer, weight) %>%
   unite(sep = ",") 
