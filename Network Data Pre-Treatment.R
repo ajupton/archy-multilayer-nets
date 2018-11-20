@@ -345,6 +345,12 @@ p %>%
 
 # Undirected networks for multinet ####
 
+# First, correct site (node) names for the convention I used previously
+j$Source <- str_replace_all(j$Source, c(" " = "_", "-" = "_", "\\." = ""))
+j$Target <- str_replace_all(j$Target, c(" " = "_", "-" = "_", "\\." = ""))
+p$Source <- str_replace_all(p$Source, c(" " = "_", "-" = "_", "\\." = ""))
+p$Target <- str_replace_all(p$Target, c(" " = "_", "-" = "_", "\\." = ""))
+
 # Jars undirected multinet
 # Pre-migration
 j %>%
