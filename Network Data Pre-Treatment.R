@@ -181,7 +181,8 @@ as.data.frame(as_edgelist(jg_un_pre)) %>%
 
 # Jar undirected post
 jars %>%
-  filter(Time == 2) %>%
+  filter(Time == 2 | (Source == "Buckeye_Bend" & Target == "Lawrenz_Gun_Club") |
+           (Source == "Lawrenz_Gun_Club" & Target == "Buckeye_Bend")) %>%
   graph.data.frame(directed = TRUE) -> jg_post
 jg_un_post <- as.undirected(jg_post, edge.attr.comb = "mean", mode = "collapse")
 
@@ -213,7 +214,8 @@ plates %>%
 
 # Plates directed post
 plates %>%
-  filter(Time == 2) %>%
+  filter(Time == 2 | (Source == "Buckeye_Bend" & Target == "Lawrenz_Gun_Club") |
+           (Source == "Lawrenz_Gun_Club" & Target == "Buckeye_Bend"))  %>%
   select(Source, Target, weight) %>%
   unite(sep = " ") %>%
   write.table("edge_list_ptech_directed_post.txt", row.names = FALSE, 
@@ -247,7 +249,8 @@ as.data.frame(as_edgelist(pg_un_pre)) %>%
 
 # Plate undirected post
 plates %>%
-  filter(Time == 2) %>%
+  filter(Time == 2 | (Source == "Buckeye_Bend" & Target == "Lawrenz_Gun_Club") |
+           (Source == "Lawrenz_Gun_Club" & Target == "Buckeye_Bend")) %>%
   graph.data.frame(directed = TRUE) -> pg_post
 pg_un_post <- as.undirected(pg_post, edge.attr.comb = "mean", mode = "collapse")
 
@@ -368,12 +371,15 @@ j %>%
 
 # Post-migration
 j %>%
-  filter(Time == 2) %>%
+  filter(Time == 2 | (Source == "Buckeye_Bend" & Target == "Lawrenz_Gun_Club") |
+           (Source == "Lawrenz_Gun_Club" & Target == "Buckeye_Bend"))  %>%
   graph.data.frame(directed = TRUE) %>%
   as.undirected(edge.attr.comb = "mean", mode = "collapse") %>%
   as_edgelist(.) %>%
   as.data.frame(.) %>%
-  mutate(weight = E(as.undirected(graph.data.frame(filter(j, Time == 2),directed = TRUE), 
+  mutate(weight = E(as.undirected(graph.data.frame(filter(j, Time == 2 | 
+                      (Source == "Buckeye_Bend" & Target == "Lawrenz_Gun_Club") |
+                                                            (Source == "Lawrenz_Gun_Club" & Target == "Buckeye_Bend")),directed = TRUE), 
                                   edge.attr.comb = "mean", mode = "collapse"))$weight) %>%
   mutate(Layer = "Jar_post") %>%
   select(V1, V2, Layer, weight) %>%
